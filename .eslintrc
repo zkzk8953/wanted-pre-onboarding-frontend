@@ -17,7 +17,11 @@
         "func-names": "off",
         "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
         "import/extensions": "off",
-        "react/require-default-props": "off"
+        "react/require-default-props": "off",
+        "linebreak-style": 0,
+        "prettier/prettier": ["error", { "endOfLine": "auto" }],
+        "object-curly-newline": "off",
+        "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }]
     },
     "settings": {
         "import/resolver": {
