@@ -7,7 +7,6 @@ import Navbar from "./components/Navbar/Navbar";
 import Join from "./pages/Join/Join";
 import Login from "./pages/Login/Login";
 /* Styles */
-import "./styles/main.scss";
 
 function App() {
   return (
