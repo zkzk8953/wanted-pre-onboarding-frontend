@@ -23,17 +23,17 @@ export default function Authorization() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = React.useState({ email: "", password: "" });
 
-  const storeToken = (token: string): void => {
-    localStorage.setItem("token", token);
-  };
+  // const storeToken = (token: string): void => {
+  //   localStorage.setItem("token", token);
+  // };
 
   const auth = async () => {
-    const res = await api.post("/auth/signin", { ...userInfo }).then((res) => {
-      console.log(res);
-    }).catch(error => {
-      window.alert(error.message);
-      console.log(error);
-    });
+    // const res = await api.post("/auth/signin", { ...userInfo }).then((res) => {
+    //   console.log(res);
+    // }).catch(error => {
+    //   window.alert(error.message);
+    //   console.log(error);
+    // });
   };
 
   return (
