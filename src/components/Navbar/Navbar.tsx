@@ -21,6 +21,7 @@ type MenuType = {
   is_visible: boolean;
   submenu: MenuType[];
 };
+
 // 메뉴 상수
 const MENU: MenuType[] = [
   {
@@ -32,7 +33,7 @@ const MENU: MenuType[] = [
   },
   {
     id: 1,
-    link: "/todo",
+    link: "/todos",
     title: "TODOS",
     is_visible: false,
     submenu: [],
@@ -41,12 +42,12 @@ const MENU: MenuType[] = [
 
 export default function Navbar() {
   // 사이드바 상태
-  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
 
   /**
    * 사이드바 상태 변경
    */
-  const handleDrawer = () => {
+  const handleDrawer = (): void => {
     setIsDrawerOpen(!isDrawerOpen);
   };
 
