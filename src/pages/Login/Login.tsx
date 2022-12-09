@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { LockOutlined } from "@material-ui/icons";
 import useStyles from "../../styles/style";
+import api from "../../api/api";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AuthorizationProps {}
@@ -20,7 +21,20 @@ export interface AuthorizationProps {}
 export default function Authorization() {
   const styles = useStyles();
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = React.useState({ id: "", password: "" });
+  const [userInfo, setUserInfo] = React.useState({ email: "", password: "" });
+
+  const storeToken = (token: string): void => {
+    localStorage.setItem("token", token);
+  };
+
+  const auth = async () => {
+    const res = await api.post("/auth/signin", { ...userInfo }).then((res) => {
+      console.log(res);
+    }).catch(error => {
+      window.alert(error.message);
+      console.log(error);
+    });
+  };
 
   return (
     <Container component="div" maxWidth="xs">
@@ -44,7 +58,10 @@ export default function Authorization() {
             fullWidth
             required
             onChange={(e) => {
-              setUserInfo({ id: e.target.value, password: userInfo.password });
+              setUserInfo({
+                email: e.target.value,
+                password: userInfo.password,
+              });
             }}
           />
           <TextField
@@ -58,7 +75,7 @@ export default function Authorization() {
             fullWidth
             required
             onChange={(e) => {
-              setUserInfo({ id: userInfo.id, password: e.target.value });
+              setUserInfo({ email: userInfo.email, password: e.target.value });
             }}
           />
           <div className={styles.dispart}>
@@ -79,6 +96,7 @@ export default function Authorization() {
             variant="contained"
             type="button"
             color="primary"
+            onClick={auth}
             fullWidth
           >
             로그인
