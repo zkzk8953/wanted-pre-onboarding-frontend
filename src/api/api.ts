@@ -1,47 +1,29 @@
-import axios, { AxiosInstance } from "axios";
+import ConfigAxios from "./ConfigAxios";
 
-type CustomResponseError = {
-  result: boolean;
-  message: string;
+export default {
+  /**
+   * 사용자 로그인
+   * @param params email, password
+   * @returns AxiosResponse 객체
+   */
+  auth(params: { email: string; password: string }) {
+    return ConfigAxios({
+      url: "auth/signin",
+      method: "post",
+      params,
+    });
+  },
+
+  /**
+   * 사용자 회원가입
+   * @param params email, password
+   * @returns AxiosResponse 객체
+   */
+  userJoin(params: { email: string; password: string }) {
+    return ConfigAxios({
+      url: "auth/signup",
+      method: "post",
+      params,
+    });
+  },
 };
-
-const api: AxiosInstance = axios.create({
-  baseURL: "https://pre-onboarding-selection-task.shop",
-  headers: {
-    "Content-Type": "application/json",
-    token: "",
-  },
-  timeout: 5000,
-});
-
-api.interceptors.request.use(
-  (config) => {
-    // 요청 전에 수행할 코드
-
-    return config;
-  },
-  (error) => {
-    // 오류 요청을 보내기 전 수행할 코드
-
-    return Promise.reject(error);
-  },
-);
-
-api.interceptors.response.use(
-  (response) => {
-    // 응답 전에 수행할 코드
-
-    return response;
-  },
-  (error) => {
-    // 오류 응답을 보내기 전 수행할 코드
-    const customError: CustomResponseError = {
-      result: true,
-      message: error.response.data.message,
-    };
-
-    return Promise.reject(customError);
-  },
-);
-
-export default api;

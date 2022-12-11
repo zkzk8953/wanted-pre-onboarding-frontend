@@ -22,18 +22,62 @@ export default function Authorization() {
   const styles = useStyles();
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = React.useState({ email: "", password: "" });
+  const [isChecked, setIsChecked] = React.useState({
+    email: false,
+    password: false,
+  });
 
-  // const storeToken = (token: string): void => {
-  //   localStorage.setItem("token", token);
-  // };
+  /**
+   * 사용자 로그인
+   * @param event
+   */
+  const handleAuth = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-  const auth = async () => {
-    // const res = await api.post("/auth/signin", { ...userInfo }).then((res) => {
-    //   console.log(res);
-    // }).catch(error => {
-    //   window.alert(error.message);
-    //   console.log(error);
-    // });
+    await api
+      .auth(userInfo)
+      .then((res) => {
+        if (res.status === 200) {
+          // 로그인 성공
+          localStorage.setItem("token", res.data.access_token);
+          // eslint-disable-next-line no-restricted-globals
+          location.reload();
+        }
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-alert
+        window.alert(`Error occurd!! : ${err.message}`);
+      });
+  };
+
+  /**
+   *  사용자 이메일 검증
+   * @param event
+   */
+  const validateUserEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const regex = /[a-z0-9]+@[a-z]+.[a-z]{2,3}/;
+
+    setUserInfo({ email: event.target.value, password: userInfo.password });
+    if (regex.test(event.target.value)) {
+      setIsChecked({ email: true, password: isChecked.password });
+    } else {
+      setIsChecked({ email: false, password: isChecked.password });
+    }
+  };
+
+  /**
+   * 사용자 비밀번호 검증
+   * @param event
+   */
+  const validateUserPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const regex = event.target.value.length;
+
+    setUserInfo({ email: userInfo.email, password: event.target.value });
+    if (regex >= 8) {
+      setIsChecked({ email: isChecked.email, password: true });
+    } else {
+      setIsChecked({ email: isChecked.email, password: false });
+    }
   };
 
   return (
@@ -46,7 +90,7 @@ export default function Authorization() {
         <Typography component="h1" variant="h4">
           로그인
         </Typography>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleAuth}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -57,12 +101,7 @@ export default function Authorization() {
             autoFocus
             fullWidth
             required
-            onChange={(e) => {
-              setUserInfo({
-                email: e.target.value,
-                password: userInfo.password,
-              });
-            }}
+            onChange={validateUserEmail}
           />
           <TextField
             variant="outlined"
@@ -74,9 +113,7 @@ export default function Authorization() {
             autoCapitalize="password"
             fullWidth
             required
-            onChange={(e) => {
-              setUserInfo({ email: userInfo.email, password: e.target.value });
-            }}
+            onChange={validateUserPassword}
           />
           <div className={styles.dispart}>
             <FormControlLabel
@@ -94,9 +131,9 @@ export default function Authorization() {
           <Button
             className={styles.form}
             variant="contained"
-            type="button"
+            type="submit"
             color="primary"
-            onClick={auth}
+            disabled={!isChecked.email || !isChecked.password}
             fullWidth
           >
             로그인

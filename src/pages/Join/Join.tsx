@@ -3,19 +3,76 @@ import * as React from "react";
 import {
   Avatar,
   Button,
-  Checkbox,
   Container,
   CssBaseline,
-  FormControlLabel,
   Grid,
   TextField,
   Typography,
 } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
 import useStyles from "../../styles/style";
+import api from "../../api/api";
 
 export default function Join() {
   const styles = useStyles();
+  const [userInfo, setUserInfo] = React.useState({ email: "", password: "" });
+  const [isChecked, setIsChecked] = React.useState({
+    email: false,
+    password: false,
+  });
+
+  /**
+   * 사용자 회원가입
+   * @param event
+   */
+  const handleJoin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    await api
+      .userJoin(userInfo)
+      .then((res) => {
+        if (res.status === 200) {
+          // 회원가입 성공
+          localStorage.setItem("token", res.data.access_token);
+          // eslint-disable-next-line no-restricted-globals
+          location.reload();
+        }
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-alert
+        window.alert(`Error occurd!! : ${err.message}`);
+      });
+  };
+
+  /**
+   *  사용자 이메일 검증
+   * @param event
+   */
+  const validateUserEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const regex = /[a-z0-9]+@[a-z]+.[a-z]{2,3}/;
+
+    setUserInfo({ email: event.target.value, password: userInfo.password });
+    if (regex.test(event.target.value)) {
+      setIsChecked({ email: true, password: isChecked.password });
+    } else {
+      setIsChecked({ email: false, password: isChecked.password });
+    }
+  };
+
+  /**
+   * 사용자 비밀번호 검증
+   * @param event
+   */
+  const validateUserPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const regex = event.target.value.length;
+
+    setUserInfo({ email: userInfo.email, password: event.target.value });
+    if (regex >= 8) {
+      setIsChecked({ email: isChecked.email, password: true });
+    } else {
+      setIsChecked({ email: isChecked.email, password: false });
+    }
+  };
 
   return (
     <Container component="div" maxWidth="xs">
@@ -27,7 +84,7 @@ export default function Join() {
         <Typography component="h1" variant="h4">
           회원가입
         </Typography>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleJoin}>
           <Grid container spacing={2} className={styles.dispart}>
             <Grid item xs={12} sm={4}>
               <Typography component="h5">아이디</Typography>
@@ -41,6 +98,7 @@ export default function Join() {
                 name="user_id"
                 fullWidth
                 autoFocus
+                onChange={validateUserEmail}
                 required
               />
             </Grid>
@@ -57,32 +115,8 @@ export default function Join() {
                 label="password"
                 name="user_id"
                 fullWidth
+                onChange={validateUserPassword}
                 required
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={2} className={styles.dispart}>
-            <Grid item xs={12} sm={4}>
-              <Typography component="h5">비밀번호 확인</Typography>
-            </Grid>
-            <Grid item xs={12} sm={8}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                id="id"
-                label="password confirm"
-                name="user_id"
-                fullWidth
-                required
-              />
-            </Grid>
-          </Grid>
-          <Grid container xs={12}>
-            <Grid item>
-              <FormControlLabel
-                style={{ marginTop: "15px" }}
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="회원가입에 동의합니다"
               />
             </Grid>
           </Grid>
@@ -92,8 +126,9 @@ export default function Join() {
             variant="contained"
             color="primary"
             className={styles.submit}
+            disabled={!isChecked.email || !isChecked.password}
           >
-            Sign Up
+            회원가입
           </Button>
         </form>
       </div>
