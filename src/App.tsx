@@ -7,7 +7,6 @@ import Navbar from "./components/Navbar/Navbar";
 import Join from "./pages/Join/Join";
 import Login from "./pages/Login/Login";
 import Todos from "./pages/Todos/Todos";
-/* Styles */
 
 type Token = {
   access_token: string | null;

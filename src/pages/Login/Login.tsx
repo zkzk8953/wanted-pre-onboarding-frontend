@@ -12,8 +12,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import { LockOutlined } from "@material-ui/icons";
-import useStyles from "../../styles/style";
+/* Modules */
 import api from "../../api/api";
+/* Styles */
+import useStyles from "../../styles/style";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AuthorizationProps {}

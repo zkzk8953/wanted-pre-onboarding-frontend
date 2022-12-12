@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
+/* Modules */
 import api from "../../api/api";
 /* Styles */
 import useStyles from "../../styles/style";
@@ -32,8 +33,6 @@ export default function Join() {
     await api
       .userJoin(userInfo)
       .then((res) => {
-        console.log(res);
-
         if (res.status === 201) {
           // 회원가입 성공
           localStorage.setItem("token", res.data.access_token);

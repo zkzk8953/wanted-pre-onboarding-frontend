@@ -1,4 +1,5 @@
 /* Libraries */
+import { AxiosResponse } from "axios";
 import configAxios from "./configAxios";
 
 export default {
@@ -7,7 +8,7 @@ export default {
    * @param data email, password
    * @returns AxiosResponse 객체
    */
-  auth(data: { email: string; password: string }) {
+  auth(data: { email: string; password: string }): Promise<AxiosResponse> {
     return configAxios({
       url: "auth/signin",
       method: "POST",
@@ -20,7 +21,7 @@ export default {
    * @param data email, password
    * @returns AxiosResponse 객체
    */
-  userJoin(data: { email: string; password: string }) {
+  userJoin(data: { email: string; password: string }): Promise<AxiosResponse> {
     return configAxios({
       url: "auth/signup",
       method: "POST",
@@ -31,7 +32,7 @@ export default {
   /**
    * todo 목록 불러오기
    */
-  loadTodoItem() {
+  loadTodoItem(): Promise<AxiosResponse> {
     return configAxios({
       url: "/todos",
       method: "get",
@@ -43,7 +44,7 @@ export default {
    * @param data todo
    * @returns AxiosResponse 객체
    */
-  createTodoItem(data: { todo: string }) {
+  createTodoItem(data: { todo: string }): Promise<AxiosResponse> {
     return configAxios({
       url: "/todos",
       method: "post",
@@ -57,7 +58,10 @@ export default {
    * @param data
    * @returns
    */
-  editTodoItem(id: number, data: { todo: string; isCompleted: boolean }) {
+  editTodoItem(
+    id: number,
+    data: { todo: string; isCompleted: boolean },
+  ): Promise<AxiosResponse> {
     return configAxios({
       url: `/todos/${id}`,
       method: "put",
@@ -70,7 +74,7 @@ export default {
    * @param id
    * @returns
    */
-  deleteTodoItem(id: number) {
+  deleteTodoItem(id: number): Promise<AxiosResponse> {
     return configAxios({
       url: `/todos/${id}`,
       method: "delete",
