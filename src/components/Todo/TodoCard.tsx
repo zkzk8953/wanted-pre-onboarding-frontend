@@ -40,6 +40,13 @@ export default function TodoCard({
   const styles = useStyles();
   const { todo, isCompleted } = item;
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  // 선택한 todo 아이템
+  const [selectedTodoItem, setSelectedTodoItem] = React.useState<TodoItem>({
+    id: -1,
+    todo: "",
+    isCompleted: false,
+    userId: -1,
+  });
 
   /**
    * 상위 컴포넌트로 props 전달
@@ -50,17 +57,24 @@ export default function TodoCard({
     onClickHandler(selectedItem, type);
   };
 
-  const handleClickOpen = () => {
-    setIsOpen(true);
+  const handleDialog = () => {
+    setSelectedTodoItem(item);
+    setIsOpen(!isOpen);
   };
 
-  const handleClose = () => {
-    setIsOpen(false);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedTodoItem({
+      ...selectedTodoItem,
+      todo: event.target.value,
+    });
   };
 
+  const handleCheck = () => {
+    handleProps({ ...item, isCompleted: !item.isCompleted }, "edit");
+  };
   return (
     <>
-      <Card className={styles.root}>
+      <Card className={styles.root} style={{ opacity: isCompleted ? 0.8 : 1 }}>
         <CardContent className={styles.checkboxRoot}>
           <div className={styles.dispart}>
             <Typography
@@ -71,7 +85,7 @@ export default function TodoCard({
               Todo
             </Typography>
             <div>
-              <IconButton onClick={handleClickOpen}>
+              <IconButton onClick={handleDialog}>
                 <Create fontSize="small" />
               </IconButton>
               <IconButton
@@ -84,7 +98,7 @@ export default function TodoCard({
             </div>
           </div>
           <Typography className={styles.title} variant="h5" component="h2">
-            {`할일 번호 ${itemNumber}`}
+            {`${itemNumber}번째 할일`}
           </Typography>
           <Typography variant="body2" component="p">
             {todo}
@@ -94,35 +108,42 @@ export default function TodoCard({
               control={<Checkbox value="remember" color="primary" />}
               label="Complete!!"
               checked={isCompleted}
+              onChange={handleCheck}
             />
           </div>
         </CardContent>
       </Card>
       <Dialog
         open={isOpen}
-        onClose={handleClose}
+        onClose={handleDialog}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+        <DialogTitle id="form-dialog-title">수정하기</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            {`할일 번호 ${itemNumber} 수정`}
-          </DialogContentText>
+          <DialogContentText>{`${itemNumber}번째 할일`}</DialogContentText>
           <TextField
             autoFocus
             margin="dense"
             id="todo"
             label="To Do Thing"
             type="text"
+            value={selectedTodoItem.todo}
+            onChange={handleChange}
             fullWidth
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
+          <Button onClick={handleDialog} color="primary">
+            취소
           </Button>
-          <Button onClick={handleClose} color="primary">
-            Subscribe
+          <Button
+            onClick={() => {
+              handleProps(selectedTodoItem, "edit");
+              handleDialog();
+            }}
+            color="primary"
+          >
+            수정
           </Button>
         </DialogActions>
       </Dialog>

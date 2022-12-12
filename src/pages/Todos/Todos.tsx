@@ -34,36 +34,14 @@ export default function Todos() {
     todo: "",
   });
 
-  // 선택한 todo 아이템
-  const [selectedTodoItem, setSelectedTodoItem] = React.useState<TodoItem>({
-    id: -1,
-    todo: "",
-    isCompleted: false,
-    userId: -1,
-  });
-
   /**
-   * 입력 폼 핸들
-   * @param event onChange 이벤트 객체
+   * 아이템 목록 불러오기
    */
-  const hangleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTodoItem({
-      todo: event.target.value,
-    });
-  };
+  const getTodoItems = async () => {
+    const response = await api.loadTodoItem();
 
-  /**
-   * 하위 컴포넌트 props 불러오기
-   * @param item 선택한 아이템
-   * @param type handle 타입
-   */
-  const handleProps = (item: TodoItem, type: "delete" | "edit"): void => {
-    setSelectedTodoItem(item);
-
-    if (type === "delete") {
-      removeTodoItems(item.id);
-    } else if (type === "edit") {
-      editTodoItems(item);
+    if (response.status === 200) {
+      setTodoItemList(response.data);
     }
   };
 
@@ -87,18 +65,7 @@ export default function Todos() {
       window.alert("추기되었습니다.");
     } else {
       // eslint-disable-next-line no-alert
-      window.alert(`에러가 발생하였습니다. 잠시후 다시 시도해주세요.`);
-    }
-  };
-
-  /**
-   * 아이템 목록 불러오기
-   */
-  const getTodoItems = async () => {
-    const response = await api.loadTodoItem();
-
-    if (response.status === 200) {
-      setTodoItemList(response.data);
+      window.alert("에러가 발생하였습니다. 잠시후 다시 시도해주세요.");
     }
   };
 
@@ -111,6 +78,12 @@ export default function Todos() {
       todo: item.todo,
       isCompleted: item.isCompleted,
     });
+
+    if (response.status === 200) {
+      getTodoItems();
+      // eslint-disable-next-line no-alert
+      window.alert("수정되었습니다");
+    }
   };
 
   /**
@@ -123,9 +96,31 @@ export default function Todos() {
     if (response.status === 204) {
       // eslint-disable-next-line no-alert
       getTodoItems();
-      setSelectedTodoItem({ id: -1, todo: "", isCompleted: false, userId: -1 });
       // eslint-disable-next-line no-alert
       window.alert("삭제되었습니다.");
+    }
+  };
+
+  /**
+   * 입력 폼 핸들
+   * @param event onChange 이벤트 객체
+   */
+  const hangleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTodoItem({
+      todo: event.target.value,
+    });
+  };
+
+  /**
+   * 하위 컴포넌트 props 불러오기
+   * @param item 선택한 아이템
+   * @param type handle 타입
+   */
+  const handleProps = (item: TodoItem, type: "delete" | "edit"): void => {
+    if (type === "delete") {
+      removeTodoItems(item.id);
+    } else if (type === "edit") {
+      editTodoItems(item);
     }
   };
 
