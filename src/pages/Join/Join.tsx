@@ -10,8 +10,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
-import useStyles from "../../styles/style";
 import api from "../../api/api";
+/* Styles */
+import useStyles from "../../styles/style";
 
 export default function Join() {
   const styles = useStyles();
@@ -31,11 +32,13 @@ export default function Join() {
     await api
       .userJoin(userInfo)
       .then((res) => {
-        if (res.status === 200) {
+        console.log(res);
+
+        if (res.status === 201) {
           // 회원가입 성공
           localStorage.setItem("token", res.data.access_token);
           // eslint-disable-next-line no-restricted-globals
-          location.reload();
+          location.replace("/");
         }
       })
       .catch((err) => {
@@ -114,6 +117,7 @@ export default function Join() {
                 id="id"
                 label="password"
                 name="user_id"
+                type="password"
                 fullWidth
                 onChange={validateUserPassword}
                 required

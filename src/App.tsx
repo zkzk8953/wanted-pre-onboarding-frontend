@@ -1,5 +1,5 @@
 /* Libraries */
-import React, { useEffect } from "react";
+import * as React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 /* Components */
 import Navbar from "./components/Navbar/Navbar";
@@ -16,12 +16,9 @@ type Token = {
 function App() {
   const [token, setToken] = React.useState<Token>({ access_token: null });
 
-  useEffect(
-    () => () => {
-      setToken({ access_token: localStorage.getItem("token") });
-    },
-    [],
-  );
+  React.useEffect(() => {
+    setToken({ access_token: localStorage.getItem("token") });
+  }, []);
 
   return (
     <div className="main-layout">

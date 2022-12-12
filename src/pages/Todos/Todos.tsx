@@ -1,21 +1,20 @@
+/* Libraries */
 import * as React from "react";
 import {
-  Card,
-  CardContent,
-  Checkbox,
   Container,
   CssBaseline,
-  FormControlLabel,
   IconButton,
   TextField,
   Typography,
 } from "@material-ui/core";
-import { Create, Delete, PlaylistAdd } from "@material-ui/icons";
-import useStyles from "../../styles/style";
+import { PlaylistAdd } from "@material-ui/icons";
 import api from "../../api/api";
+/* Components */
+import TodoCard from "../../components/Todo/TodoCard";
+/* Styles */
+import useStyles from "../../styles/style";
 
-// eslint-disable-next-line no-unused-vars
-type TodoItem = {
+export type TodoItem = {
   id: number;
   todo: string;
   isCompleted: boolean;
@@ -27,6 +26,12 @@ export default function Todos() {
   const [todoItemList, setTodoItemList] = React.useState<TodoItem[]>([]);
   const [todoItem, setTodoItem] = React.useState({
     todo: "",
+  });
+  const [selectedTodoItem, setSelectedTodoItem] = React.useState<TodoItem>({
+    id: -1,
+    todo: "",
+    isCompleted: false,
+    userId: -1,
   });
 
   /**
@@ -40,6 +45,32 @@ export default function Todos() {
   };
 
   /**
+   * 하위 컴포넌트 props 불러오기
+   * @param item
+   * @param type
+   */
+  const handleProps = (item: TodoItem, type: "delete" | "edit") => {
+    setSelectedTodoItem(item);
+
+    if (type === "delete") {
+      removeTodoItems(item.id);
+    } else if (type === "edit") {
+      editTodoItems(item);
+    }
+  };
+
+  /**
+   * 목록 불러오기
+   */
+  const getTodoItems = async () => {
+    const response = await api.loadTodoItem();
+
+    if (response.status === 200) {
+      setTodoItemList(response.data);
+    }
+  };
+
+  /**
    * 아이템 추가
    */
   const handleCreate = async () => {
@@ -47,36 +78,38 @@ export default function Todos() {
 
     if (response.status === 201) {
       // eslint-disable-next-line no-alert
-      window.alert(`추가 성공`);
+      setTodoItem({ todo: "" });
+      getTodoItems();
+      window.alert("추기되었습니다.");
+    } else {
+      // eslint-disable-next-line no-alert
+      window.alert(`에러가 발생하였습니다. 잠시후 다시 시도해주세요.`);
     }
   };
 
   /**
    * 아이템 삭제
+   * @param id 아이디
    */
-  // const removeTodoItems = () => {
+  const removeTodoItems = async (id: number) => {
+    const response = await api.deleteTodoItem(id);
 
-  // }
+    if (response.status === 204) {
+      // eslint-disable-next-line no-alert
+      getTodoItems();
+      setSelectedTodoItem({ id: -1, todo: "", isCompleted: false, userId: -1 });
+      window.alert("삭제되었습니다.");
+    }
+  };
 
   /**
    * 아이템 수정
    */
-  // const editTodoItems = () => {
-
-  // }
+  const editTodoItems = async (item: TodoItem) => {
+    // const response = await api.editTodoItem(item.id, { todo: item.todo, isCompleted: item.isCompleted });
+  };
 
   React.useEffect(() => {
-    /**
-     * 목록 불러오기
-     */
-    const getTodoItems = async () => {
-      const response = await api.loadTodoItem();
-
-      if (response.status === 200) {
-        setTodoItemList([...todoItemList, response.data]);
-      }
-    };
-
     getTodoItems();
   }, []);
 
@@ -97,7 +130,9 @@ export default function Todos() {
             name="todo_item"
             autoCapitalize="todo"
             onChange={hangleChange}
+            value={todoItem.todo}
             fullWidth
+            autoFocus
             required
           />
           <IconButton
@@ -109,42 +144,16 @@ export default function Todos() {
             <PlaylistAdd />
           </IconButton>
         </div>
-        {todoItemList.map((item, i) => (
-          <Card className={styles.root} key={item.id}>
-            <CardContent className={styles.checkboxRoot}>
-              <div className={styles.dispart}>
-                <Typography
-                  className={styles.sort}
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  Todo
-                </Typography>
-                <div>
-                  <IconButton>
-                    <Create fontSize="small" />
-                  </IconButton>
-                  <IconButton>
-                    <Delete fontSize="small" />
-                  </IconButton>
-                </div>
-              </div>
-              <Typography className={styles.title} variant="h5" component="h2">
-                {`Task ${i}`}
-              </Typography>
-              <Typography variant="body2" component="p">
-                {item.todo}
-              </Typography>
-              <div className={styles.checkbox}>
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Complete!!"
-                  checked={item.isCompleted}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+        <div className={styles.root}>
+          {todoItemList.map((item, index) => (
+            <TodoCard
+              item={item}
+              key={item.id}
+              onClickHandler={handleProps}
+              itemNumber={index + 1}
+            />
+          ))}
+        </div>
       </div>
     </Container>
   );
