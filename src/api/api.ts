@@ -1,29 +1,30 @@
+/* Libraries */
 import configAxios from "./configAxios";
 
 export default {
   /**
    * 사용자 로그인
-   * @param params email, password
+   * @param data email, password
    * @returns AxiosResponse 객체
    */
-  auth(params: { email: string; password: string }) {
+  auth(data: { email: string; password: string }) {
     return configAxios({
       url: "auth/signin",
-      method: "post",
-      params,
+      method: "POST",
+      data,
     });
   },
 
   /**
    * 사용자 회원가입
-   * @param params email, password
+   * @param data email, password
    * @returns AxiosResponse 객체
    */
-  userJoin(params: { email: string; password: string }) {
+  userJoin(data: { email: string; password: string }) {
     return configAxios({
       url: "auth/signup",
-      method: "post",
-      params,
+      method: "POST",
+      data,
     });
   },
 
@@ -39,14 +40,40 @@ export default {
 
   /**
    * todo 아이템 추가
-   * @param params todo
+   * @param data todo
    * @returns AxiosResponse 객체
    */
-  createTodoItem(params: { todo: string }) {
+  createTodoItem(data: { todo: string }) {
     return configAxios({
       url: "/todos",
       method: "post",
-      params,
+      data,
+    });
+  },
+
+  /**
+   * todo 아이템 수정
+   * @param id
+   * @param data
+   * @returns
+   */
+  editTodoItem(id: number, data: { todo: string; isCompleted: boolean }) {
+    return configAxios({
+      url: `/todos/${id}`,
+      method: "put",
+      data,
+    });
+  },
+
+  /**
+   * todo 아이템 삭제
+   * @param id
+   * @returns
+   */
+  deleteTodoItem(id: number) {
+    return configAxios({
+      url: `/todos/${id}`,
+      method: "delete",
     });
   },
 };

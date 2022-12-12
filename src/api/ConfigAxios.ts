@@ -1,3 +1,4 @@
+/* Libraries */
 import axios, { AxiosInstance } from "axios";
 
 type CustomAxiosError = {
@@ -5,13 +6,14 @@ type CustomAxiosError = {
   message: string;
 };
 
+const token = localStorage.getItem("token");
+
 const configAxios: AxiosInstance = axios.create({
-  baseURL: "https://pre-onboarding-selection-task.shop",
+  baseURL: "https://pre-onboarding-selection-task.shop/",
   headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
+    Authorization: token ? `Bearer ${token}` : "",
     "Content-Type": "application/json",
   },
-  timeout: 5000,
 });
 
 configAxios.interceptors.request.use(
