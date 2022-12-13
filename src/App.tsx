@@ -8,11 +8,13 @@ import Join from "./pages/Join/Join";
 import Login from "./pages/Login/Login";
 import Todos from "./pages/Todos/Todos";
 
+// 토큰 타입
 type Token = {
   access_token: string | null;
 };
 
 function App() {
+  // 토큰
   const [token, setToken] = React.useState<Token>({ access_token: null });
 
   React.useEffect(() => {
