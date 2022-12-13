@@ -8,12 +8,13 @@ import {
   Typography,
 } from "@material-ui/core";
 import { PlaylistAdd } from "@material-ui/icons";
+import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 /* Components */
 import TodoCard from "../../components/Todo/TodoCard";
 /* Modules */
 import api from "../../api/api";
 /* Styles */
-import useStyles from "../../styles/style";
+import useStyles from "../../hooks/style";
 
 export type TodoItem = {
   id: number;
@@ -24,13 +25,13 @@ export type TodoItem = {
 
 export default function Todos() {
   // style hook
-  const styles = useStyles();
+  const styles: ClassNameMap = useStyles();
 
   // todo 목록
   const [todoItemList, setTodoItemList] = React.useState<TodoItem[]>([]);
 
   // 추가할 todo 아이템
-  const [todoItem, setTodoItem] = React.useState({
+  const [todoItem, setTodoItem] = React.useState<{ todo: string }>({
     todo: "",
   });
 

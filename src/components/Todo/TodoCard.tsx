@@ -16,15 +16,17 @@ import {
   TextField,
 } from "@material-ui/core";
 import { Create, Delete } from "@material-ui/icons";
+import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 /* Components */
 import { TodoItem } from "../../pages/Todos/Todos";
 /* Styles */
-import useStyles from "../../styles/style";
+import useStyles from "../../hooks/style";
 
-interface PropsHandler {
+// props handler 타입
+type PropsHandler = {
   // eslint-disable-next-line no-unused-vars
   (item: TodoItem, type: "delete" | "edit"): void;
-}
+};
 
 // props 타입
 type TodoProps = {
@@ -39,10 +41,10 @@ export default function TodoCard({
   onClickHandler,
 }: TodoProps) {
   // style hook
-  const styles = useStyles();
+  const styles: ClassNameMap = useStyles();
 
   // props
-  const { todo, isCompleted } = item;
+  const { todo, isCompleted }: TodoItem = item;
 
   // 모달 OPEN 여부
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
@@ -60,14 +62,17 @@ export default function TodoCard({
    * @param selectedItem 선택한 todo 아이템
    * @param type 데이터 변경 타입
    */
-  const handleProps = (selectedItem: TodoItem, type: "delete" | "edit") => {
+  const handleProps = (
+    selectedItem: TodoItem,
+    type: "delete" | "edit",
+  ): void => {
     onClickHandler(selectedItem, type);
   };
 
   /**
    * 모달창 열기
    */
-  const handleDialog = () => {
+  const handleDialog = (): void => {
     setSelectedTodoItem(item);
     setIsOpen(!isOpen);
   };
@@ -76,7 +81,7 @@ export default function TodoCard({
    * todo 수정하기
    * @param event
    */
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSelectedTodoItem({
       ...selectedTodoItem,
       todo: event.target.value,
@@ -86,7 +91,7 @@ export default function TodoCard({
   /**
    * 체크박스 변경
    */
-  const handleCheck = () => {
+  const handleCheck = (): void => {
     handleProps({ ...item, isCompleted: !item.isCompleted }, "edit");
   };
 
@@ -94,7 +99,9 @@ export default function TodoCard({
    * 키 입력 핸들
    * @param event
    */
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ): void => {
     if (event.key === "Enter") {
       handleProps(selectedTodoItem, "edit");
       handleDialog();
