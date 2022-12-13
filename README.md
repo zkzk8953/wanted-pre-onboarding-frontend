@@ -5,6 +5,6 @@
 # ▎실행 방법
 
 <ul>
-  <ol>yarn install</ol>
-  <ol>yarn start</ol>
+  <li>yarn install</li>
+  <li>yarn start</li>
 </ul>
