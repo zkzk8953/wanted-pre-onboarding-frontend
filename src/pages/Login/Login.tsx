@@ -40,9 +40,16 @@ export default function Authorization() {
   const handleAuth = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const response = await api.auth(userInfo);
+    let response;
 
-    if (response.status === 200) {
+    try {
+      response = await api.auth(userInfo);
+    } catch (err) {
+      // eslint-disable-next-line no-alert, no-console
+      console.log(`Error occured : ${err}`);
+    }
+
+    if (response !== undefined && response.status === 200) {
       localStorage.setItem("token", response.data.access_token);
       // eslint-disable-next-line no-restricted-globals
       location.reload();

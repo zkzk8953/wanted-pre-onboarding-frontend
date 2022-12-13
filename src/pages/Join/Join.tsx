@@ -35,12 +35,21 @@ export default function Join() {
   const handleJoin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const response = await api.auth(userInfo);
+    let response;
 
-    if (response.status === 200) {
+    try {
+      response = await api.userJoin(userInfo);
+    } catch (err) {
+      // eslint-disable-next-line no-alert, no-console
+      console.log(`Error occured : ${err}`);
+    }
+
+    if (response !== undefined && response.status === 201) {
       localStorage.setItem("token", response.data.access_token);
+      // eslint-disable-next-line no-alert
+      window.alert("회원가입에 성공하였습니다.");
       // eslint-disable-next-line no-restricted-globals
-      location.reload();
+      location.replace("/");
     } else {
       // eslint-disable-next-line no-alert
       window.alert("에러가 발생하였습니다. 잠시후 다시 시도해주세요.");
