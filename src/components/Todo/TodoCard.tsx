@@ -90,6 +90,17 @@ export default function TodoCard({
     handleProps({ ...item, isCompleted: !item.isCompleted }, "edit");
   };
 
+  /**
+   * 키 입력 핸들
+   * @param event
+   */
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleProps(selectedTodoItem, "edit");
+      handleDialog();
+    }
+  };
+
   return (
     <>
       <Card className={styles.root} style={{ opacity: isCompleted ? 0.8 : 1 }}>
@@ -147,6 +158,7 @@ export default function TodoCard({
             type="text"
             value={selectedTodoItem.todo}
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
             fullWidth
           />
         </DialogContent>

@@ -110,6 +110,16 @@ export default function Todos() {
   };
 
   /**
+   * 키 입력 핸들
+   * @param event
+   */
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleCreate();
+    }
+  };
+
+  /**
    * 하위 컴포넌트 props 불러오기
    * @param item 선택한 아이템
    * @param type handle 타입
@@ -143,6 +153,7 @@ export default function Todos() {
             name="todo_item"
             autoCapitalize="todo"
             onChange={hangleChange}
+            onKeyDown={handleKeyDown}
             value={todoItem.todo}
             fullWidth
             autoFocus

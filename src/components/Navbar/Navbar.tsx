@@ -79,8 +79,8 @@ export default function Navbar() {
       <AppBar position="static" color="primary">
         <CssBaseline />
         <Toolbar>
-          <Typography variant="h5" component="div" style={{ flexGrow: 1 }}>
-            온보딩
+          <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
+            프리온보딩 프론트엔드 지원자 : 이성헌
           </Typography>
           <IconButton
             onClick={handleDrawer}
