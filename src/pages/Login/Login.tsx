@@ -17,13 +17,17 @@ import api from "../../api/api";
 /* Styles */
 import useStyles from "../../styles/style";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface AuthorizationProps {}
-
 export default function Authorization() {
+  // style hook
   const styles = useStyles();
+
+  // router hook
   const navigate = useNavigate();
+
+  // 유저 정보
   const [userInfo, setUserInfo] = React.useState({ email: "", password: "" });
+
+  // 유저 정보 validation
   const [isChecked, setIsChecked] = React.useState({
     email: false,
     password: false,
@@ -31,35 +35,32 @@ export default function Authorization() {
 
   /**
    * 사용자 로그인
-   * @param event
+   * @param event 이벤트
    */
   const handleAuth = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    await api
-      .auth(userInfo)
-      .then((res) => {
-        if (res.status === 200) {
-          // 로그인 성공
-          localStorage.setItem("token", res.data.access_token);
-          // eslint-disable-next-line no-restricted-globals
-          location.reload();
-        }
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-alert
-        window.alert(`Error occurd!! : ${err.message}`);
-      });
+    const response = await api.auth(userInfo);
+
+    if (response.status === 200) {
+      localStorage.setItem("token", response.data.access_token);
+      // eslint-disable-next-line no-restricted-globals
+      location.reload();
+    } else {
+      // eslint-disable-next-line no-alert
+      window.alert("에러가 발생하였습니다. 잠시후 다시 시도해주세요.");
+    }
   };
 
   /**
    *  사용자 이메일 검증
-   * @param event
+   * @param event 이벤트
    */
   const validateUserEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     const regex = /[a-z0-9]+@[a-z]+.[a-z]{2,3}/;
 
     setUserInfo({ email: event.target.value, password: userInfo.password });
+
     if (regex.test(event.target.value)) {
       setIsChecked({ email: true, password: isChecked.password });
     } else {
@@ -69,12 +70,13 @@ export default function Authorization() {
 
   /**
    * 사용자 비밀번호 검증
-   * @param event
+   * @param event 이벤트
    */
   const validateUserPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     const regex = event.target.value.length;
 
     setUserInfo({ email: userInfo.email, password: event.target.value });
+
     if (regex >= 8) {
       setIsChecked({ email: isChecked.email, password: true });
     } else {

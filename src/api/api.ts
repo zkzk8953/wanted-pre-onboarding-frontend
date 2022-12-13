@@ -55,8 +55,8 @@ export default {
   /**
    * todo 아이템 수정
    * @param id
-   * @param data
-   * @returns
+   * @param data todo, isCompleted
+   * @returns AxiosResponse 객체
    */
   editTodoItem(
     id: number,
@@ -72,7 +72,7 @@ export default {
   /**
    * todo 아이템 삭제
    * @param id
-   * @returns
+   * @returns AxiosResponse 객체
    */
   deleteTodoItem(id: number): Promise<AxiosResponse> {
     return configAxios({

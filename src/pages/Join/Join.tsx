@@ -16,8 +16,13 @@ import api from "../../api/api";
 import useStyles from "../../styles/style";
 
 export default function Join() {
+  // style hook
   const styles = useStyles();
+
+  // 유저 정보
   const [userInfo, setUserInfo] = React.useState({ email: "", password: "" });
+
+  // 유저 정보 validation
   const [isChecked, setIsChecked] = React.useState({
     email: false,
     password: false,
@@ -25,30 +30,26 @@ export default function Join() {
 
   /**
    * 사용자 회원가입
-   * @param event
+   * @param event 이벤트
    */
   const handleJoin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    await api
-      .userJoin(userInfo)
-      .then((res) => {
-        if (res.status === 201) {
-          // 회원가입 성공
-          localStorage.setItem("token", res.data.access_token);
-          // eslint-disable-next-line no-restricted-globals
-          location.replace("/");
-        }
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-alert
-        window.alert(`Error occurd!! : ${err.message}`);
-      });
+    const response = await api.auth(userInfo);
+
+    if (response.status === 200) {
+      localStorage.setItem("token", response.data.access_token);
+      // eslint-disable-next-line no-restricted-globals
+      location.reload();
+    } else {
+      // eslint-disable-next-line no-alert
+      window.alert("에러가 발생하였습니다. 잠시후 다시 시도해주세요.");
+    }
   };
 
   /**
    *  사용자 이메일 검증
-   * @param event
+   * @param event 이벤트
    */
   const validateUserEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     const regex = /[a-z0-9]+@[a-z]+.[a-z]{2,3}/;
@@ -63,7 +64,7 @@ export default function Join() {
 
   /**
    * 사용자 비밀번호 검증
-   * @param event
+   * @param event 이벤트
    */
   const validateUserPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     const regex = event.target.value.length;

@@ -23,7 +23,7 @@ type MenuType = {
   submenu: MenuType[];
 };
 
-// 메뉴 상수
+// 메뉴 목록
 const MENU: MenuType[] = [
   {
     id: 0,

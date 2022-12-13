@@ -58,7 +58,6 @@ export default function Todos() {
     const response = await api.createTodoItem(todoItem);
 
     if (response.status === 201) {
-      // eslint-disable-next-line no-alert
       setTodoItem({ todo: "" });
       getTodoItems();
       // eslint-disable-next-line no-alert
@@ -94,7 +93,6 @@ export default function Todos() {
     const response = await api.deleteTodoItem(id);
 
     if (response.status === 204) {
-      // eslint-disable-next-line no-alert
       getTodoItems();
       // eslint-disable-next-line no-alert
       window.alert("삭제되었습니다.");

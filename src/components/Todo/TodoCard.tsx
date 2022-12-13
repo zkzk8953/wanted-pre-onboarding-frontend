@@ -26,6 +26,7 @@ interface PropsHandler {
   (item: TodoItem, type: "delete" | "edit"): void;
 }
 
+// props 타입
 type TodoProps = {
   item: TodoItem;
   itemNumber: number;
@@ -37,9 +38,15 @@ export default function TodoCard({
   itemNumber,
   onClickHandler,
 }: TodoProps) {
+  // style hook
   const styles = useStyles();
+
+  // props
   const { todo, isCompleted } = item;
+
+  // 모달 OPEN 여부
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+
   // 선택한 todo 아이템
   const [selectedTodoItem, setSelectedTodoItem] = React.useState<TodoItem>({
     id: -1,
@@ -57,11 +64,18 @@ export default function TodoCard({
     onClickHandler(selectedItem, type);
   };
 
+  /**
+   * 모달창 열기
+   */
   const handleDialog = () => {
     setSelectedTodoItem(item);
     setIsOpen(!isOpen);
   };
 
+  /**
+   * todo 수정하기
+   * @param event
+   */
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedTodoItem({
       ...selectedTodoItem,
@@ -69,9 +83,13 @@ export default function TodoCard({
     });
   };
 
+  /**
+   * 체크박스 변경
+   */
   const handleCheck = () => {
     handleProps({ ...item, isCompleted: !item.isCompleted }, "edit");
   };
+
   return (
     <>
       <Card className={styles.root} style={{ opacity: isCompleted ? 0.8 : 1 }}>
