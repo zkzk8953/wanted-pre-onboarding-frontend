@@ -4,7 +4,7 @@
 
 # ▎실행 방법
 
-<ul>
+<ol>
   <li>yarn install</li>
   <li>yarn start</li>
-</ul>
+</ol>
