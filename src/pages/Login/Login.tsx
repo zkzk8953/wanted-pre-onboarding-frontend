@@ -1,6 +1,6 @@
 /* Libraries */
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -12,23 +12,31 @@ import {
   Typography,
 } from "@material-ui/core";
 import { LockOutlined } from "@material-ui/icons";
+import { ClassNameMap } from "@material-ui/core/styles/withStyles";
+import { UserInfo } from "../Join/Join";
 /* Modules */
 import api from "../../api/api";
 /* Styles */
-import useStyles from "../../styles/style";
+import useStyles from "../../hooks/style";
 
 export default function Authorization() {
   // style hook
-  const styles = useStyles();
+  const styles: ClassNameMap = useStyles();
 
   // router hook
-  const navigate = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
 
   // 유저 정보
-  const [userInfo, setUserInfo] = React.useState({ email: "", password: "" });
+  const [userInfo, setUserInfo] = React.useState<UserInfo>({
+    email: "",
+    password: "",
+  });
 
   // 유저 정보 validation
-  const [isChecked, setIsChecked] = React.useState({
+  const [isChecked, setIsChecked] = React.useState<{
+    email: boolean;
+    password: boolean;
+  }>({
     email: false,
     password: false,
   });

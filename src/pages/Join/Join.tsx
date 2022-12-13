@@ -10,20 +10,33 @@ import {
   Typography,
 } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
+import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 /* Modules */
 import api from "../../api/api";
 /* Styles */
-import useStyles from "../../styles/style";
+import useStyles from "../../hooks/style";
+
+// 유정 정보 타입
+export type UserInfo = {
+  email: string;
+  password: string;
+};
 
 export default function Join() {
   // style hook
-  const styles = useStyles();
+  const styles: ClassNameMap = useStyles();
 
   // 유저 정보
-  const [userInfo, setUserInfo] = React.useState({ email: "", password: "" });
+  const [userInfo, setUserInfo] = React.useState<UserInfo>({
+    email: "",
+    password: "",
+  });
 
   // 유저 정보 validation
-  const [isChecked, setIsChecked] = React.useState({
+  const [isChecked, setIsChecked] = React.useState<{
+    email: boolean;
+    password: boolean;
+  }>({
     email: false,
     password: false,
   });
