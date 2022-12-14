@@ -1,18 +1,11 @@
 # ▎Wanted-pre-onboarding-frontend
+This project was generated with React version 18.2.0.
 
-<p> 원티드 프리 온보딩 프론트엔드 인턴십 과제 : 이성헌 지원자 </p>
+# ▎Development server
+Run `yarn install` and `yarn start` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files 
 
+# ▎Build
+Run `yarn build` to build the project. The build artifacts will be stored in the `build/` directory. Use the `--prod` flag for a production build.
 
-
-# ▎실행 방법
-
-<ol>
-  <li>yarn install</li>
-  <li>yarn start</li>
-</ol>
-
-# ▎배포 주소
-
-<a href="http://ec2-34-224-243-219.compute-1.amazonaws.com/todos">http://ec2-34-224-243-219.compute-1.amazonaws.com/todos</a>
-
-<p>aws ec2, linux, nginx 를 사용하여 배포 하였습니다.</p>
+# ▎Deploy
+The project is deployed to this url `<a href="http://ec2-34-224-243-219.compute-1.amazonaws.com/todos">http://ec2-34-224-243-219.compute-1.amazonaws.com/todos</a>`
