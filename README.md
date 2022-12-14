@@ -1,6 +1,8 @@
 # ▎Wanted-pre-onboarding-frontend
 
-<span> 원티드 프리 온보딩 프론트엔드 인턴십 과제 </span>
+<p> 원티드 프리 온보딩 프론트엔드 인턴십 과제 : 이성헌 지원자 </p>
+
+
 
 # ▎실행 방법
 
