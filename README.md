@@ -13,6 +13,6 @@
 
 # ▎배포 주소
 
-<a href="http://ec2-34-224-243-219.compute-1.amazonaws.com/todos">바로가기</a>
+<a href="http://ec2-34-224-243-219.compute-1.amazonaws.com/todos">http://ec2-34-224-243-219.compute-1.amazonaws.com/todos</a>
 
 <p>aws ec2, linux, nginx 를 사용하여 배포 하였습니다.</p>
