@@ -8,3 +8,9 @@
   <li>yarn install</li>
   <li>yarn start</li>
 </ol>
+
+# ▎배포 주소
+
+<a href="http://ec2-34-224-243-219.compute-1.amazonaws.com/todos">바로가기</a>
+
+<p>aws ec2 를 사용하여 배포하였습니다.</p>
